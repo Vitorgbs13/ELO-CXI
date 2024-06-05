@@ -1,13 +1,11 @@
-﻿document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('languageSelector').addEventListener('change', function() {
     const language = this.value;
     setLanguage(language);
   });
 
-
   loadHistory();
 });
-
 
 function setLanguage(language) {
   const translations = {
@@ -112,7 +110,6 @@ function setLanguage(language) {
     }
   };
 
-
   const translation = translations[language];
   document.getElementById('welcomeMessage').textContent = translation.welcomeMessage;
   document.getElementById('player1Label').textContent = translation.player1Label;
@@ -132,11 +129,9 @@ function setLanguage(language) {
   document.getElementById('player1RatingAfter').textContent = translation.player1RatingAfter;
   document.getElementById('player2RatingAfter').textContent = translation.player2RatingAfter;
 
-
   // Update placeholders
   document.getElementById('player1').placeholder = translation.placeholders.player1;
   document.getElementById('player2').placeholder = translation.placeholders.player2;
-
 
   // Update K factor options
   const kFactor1 = document.getElementById('kFactor1');
@@ -150,7 +145,6 @@ function setLanguage(language) {
     kFactor2.add(option2);
   });
 
-
   // Update result options
   const resultSelect = document.getElementById('result');
   resultSelect.innerHTML = ''; // Clear existing options
@@ -159,7 +153,6 @@ function setLanguage(language) {
     resultSelect.add(option);
   }
 }
-
 
 function calculateRating() {
   const player1Rating = parseInt(document.getElementById('player1').value);
@@ -204,17 +197,14 @@ function calculateRating() {
   document.getElementById('historySection').style.display = 'block';
 }
 
-
 function calculateElo(playerRating, opponentRating, score, k) {
   const expectedScore = 1 / (1 + Math.pow(10, (opponentRating - playerRating) / 400));
   return playerRating + k * (score - expectedScore);
 }
 
-
 function addMatchToHistory(player1, player2, player1RatingBefore, player2RatingBefore, result, player1RatingAfter, player2RatingAfter) {
   const historyTable = document.getElementById('historyTable').getElementsByTagName('tbody')[0];
   const newRow = historyTable.insertRow();
-
 
   newRow.insertCell(0).textContent = player1;
   newRow.insertCell(1).textContent = player1RatingBefore.toFixed(2);
@@ -224,7 +214,6 @@ function addMatchToHistory(player1, player2, player1RatingBefore, player2RatingB
   newRow.insertCell(5).textContent = player1RatingAfter.toFixed(2);
   newRow.insertCell(6).textContent = player2RatingAfter.toFixed(2);
 }
-
 
 function saveHistory() {
   const historyTable = document.getElementById('historyTable').getElementsByTagName('tbody')[0];
@@ -248,14 +237,12 @@ function saveHistory() {
   localStorage.setItem('matchHistory', JSON.stringify(history));
 }
 
-
 function loadHistory() {
   const history = JSON.parse(localStorage.getItem('matchHistory')) || [];
   for (const match of history) {
     addMatchToHistory(match.player1, match.player2, parseFloat(match.player1RatingBefore), parseFloat(match.player2RatingBefore), match.result, parseFloat(match.player1RatingAfter), parseFloat(match.player2RatingAfter));
   }
 }
-
 
 function clearHistory() {
   localStorage.removeItem('matchHistory');
